@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#16834a">
+  <title>SaveBite AI | Smart Restaurant</title>
+  <link rel="icon" type="image/png" href="logo.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="loginScreen" class="login-screen">
+    <div class="login-card">
+      <img src="logo.png" class="login-logo" alt="SaveBite AI">
+      <div class="eyebrow">SMART RESTAURANT MANAGEMENT</div>
+      <h1>SaveBite <span>AI</span></h1>
+      <p>ลดอาหารเหลือ เพิ่มกำไร บริหารร้านอย่างชาญฉลาด</p>
+      <form id="loginForm">
+        <label for="username">ชื่อผู้ใช้งาน</label>
+        <input id="username" autocomplete="username" placeholder="กรอกชื่อสำหรับทดลองใช้งาน" required>
+        <label for="role">ประเภทบัญชี</label>
+        <select id="role">
+          <option value="owner">เจ้าของร้าน</option>
+          <option value="staff">พนักงาน</option>
+        </select>
+        <button class="primary-btn" type="submit">เข้าสู่ระบบ <span>→</span></button>
+      </form>
+      <small>โหมดสาธิตสำหรับโปรเจกต์ — ยังไม่ใช่ระบบยืนยันตัวตนจริง</small>
+    </div>
+  </div>
+
+  <div id="app" class="app hidden">
+    <aside class="sidebar">
+      <div class="brand">
+        <img src="logo.png" alt="SaveBite AI logo">
+        <div><strong>SaveBite <span>AI</span></strong><small>Smart Restaurant</small></div>
+      </div>
+      <div class="side-caption">เมนูหลัก</div>
+      <nav id="mainNav">
+        <button class="nav-btn active" data-page="dashboard"><span>⌂</span> ภาพรวม</button>
+        <button class="nav-btn" data-page="sales"><span>฿</span> บันทึกยอดขาย</button>
+        <button class="nav-btn" data-page="waste"><span>♻</span> อาหารเหลือทิ้ง</button>
+        <button class="nav-btn" data-page="menu"><span>☷</span> วิเคราะห์เมนู</button>
+        <button class="nav-btn" data-page="forecast"><span>✦</span> คาดการณ์พรุ่งนี้</button>
+        <button class="nav-btn owner-only" data-page="reports"><span>▤</span> รายงานยอดขาย</button>
+        <button class="nav-btn" data-page="privacy"><span>♧</span> Privacy Center</button>
+      </nav>
+      <div class="sidebar-bottom">
+        <div class="user-chip"><div class="avatar">S</div><div><b id="userName">ผู้ใช้งาน</b><small id="userRole">บัญชีทดลอง</small></div></div>
+        <button id="logoutBtn" class="logout-btn">ออกจากระบบ ↗</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div class="mobile-brand"><img src="logo.png" alt=""><b>SaveBite <span>AI</span></b></div>
+        <div><div class="eyebrow">YOUR RESTAURANT, SMARTER</div><h2 id="pageTitle">ภาพรวมร้านอาหาร</h2></div>
+        <div class="topbar-right"><span class="status-dot"></span><span>โหมดทดลอง</span><time id="today"></time></div>
+      </header>
+
+      <section id="dashboard" class="page">
+        <div class="hero">
+          <div><span class="hero-pill">✦ SMART MANAGEMENT SYSTEM</span><h2>บริหารร้านให้ดีขึ้น<br>ลดขยะ เพิ่มกำไร <span>🌱</span></h2><p>มองเห็นยอดขาย ต้นทุน และอาหารเหลือได้ในที่เดียว</p></div>
+          <img src="logo.png" alt="SaveBite AI">
+          <div class="hero-orb"></div>
+        </div>
+        <div class="stats-grid">
+          <article class="stat-card"><div class="stat-top"><span>ยอดขายรวม</span><span class="stat-icon green">฿</span></div><h3 id="totalSales">฿0</h3><small>ยอดขายจากรายการที่บันทึก</small></article>
+          <article class="stat-card"><div class="stat-top"><span>กำไรโดยประมาณ</span><span class="stat-icon yellow">↗</span></div><h3 id="totalProfit">฿0</h3><small>ยอดขายหักต้นทุนเมนู</small></article>
+          <article class="stat-card"><div class="stat-top"><span>อาหารเหลือสะสม</span><span class="stat-icon green">♻</span></div><h3 id="totalWaste">0 kg</h3><small>น้ำหนักอาหารเหลือที่บันทึก</small></article>
+          <article class="stat-card"><div class="stat-top"><span>จำนวนจานที่ขาย</span><span class="stat-icon yellow">☷</span></div><h3 id="totalOrders">0</h3><small>รวมจำนวนจากรายการขาย</small></article>
+        </div>
+        <div class="content-grid">
+          <article class="panel"><div class="panel-heading"><div><span class="eyebrow">PERFORMANCE</span><h3>ยอดขาย 6 เดือนล่าสุด</h3></div><span class="panel-icon">▥</span></div><div id="monthlyChart" class="chart"></div></article>
+          <article class="panel"><div class="panel-heading"><div><span class="eyebrow">SMART INSIGHTS</span><h3>คำแนะนำจาก SaveBite</h3></div><span class="panel-icon">✦</span></div><div id="recommendations" class="insights"></div></article>
+        </div>
+      </section>
+
+      <section id="sales" class="page hidden">
+        <div class="page-intro"><span class="eyebrow">SALES TRACKER</span><h2>บันทึกยอดขาย</h2><p>บันทึกจำนวนขาย ราคาขาย และต้นทุนต่อจาน เพื่อคำนวณกำไร</p></div>
+        <article class="panel form-panel"><h3>＋ เพิ่มรายการขาย</h3><form id="salesForm" class="form-grid">
+          <div><label for="saleName">ชื่อเมนู</label><input id="saleName" placeholder="เช่น ข้าวกะเพรา" required></div>
+          <div><label for="saleQty">จำนวนที่ขาย (จาน)</label><input id="saleQty" type="number" min="1" step="1" required></div>
+          <div><label for="salePrice">ราคาขายต่อจาน (บาท)</label><input id="salePrice" type="number" min="0" step="0.01" required></div>
+          <div><label for="saleCost">ต้นทุนต่อจาน (บาท)</label><input id="saleCost" type="number" min="0" step="0.01" required></div>
+          <button class="primary-btn form-submit" type="submit">บันทึกยอดขาย <span>→</span></button>
+        </form></article>
+        <article class="panel"><div class="panel-heading"><h3>ประวัติการขาย</h3><span class="muted">รายการล่าสุดอยู่ด้านบน</span></div><div class="table-wrap"><table><thead><tr><th>วันที่</th><th>เมนู</th><th>จำนวน</th><th>ยอดขาย</th><th>กำไร</th></tr></thead><tbody id="salesTable"></tbody></table></div></article>
+      </section>
+
+      <section id="waste" class="page hidden">
+        <div class="page-intro"><span class="eyebrow">FOOD WASTE CONTROL</span><h2>จัดการอาหารเหลือทิ้ง</h2><p>บันทึกปริมาณอาหารเหลือและต้นทุนที่สูญเสีย เพื่อหาวิธีลดของเสีย</p></div>
+        <article class="panel form-panel"><h3>＋ บันทึกอาหารเหลือ</h3><form id="wasteForm" class="form-grid">
+          <div><label for="wasteName">ชื่ออาหาร / วัตถุดิบ</label><input id="wasteName" placeholder="เช่น ข้าวสวย" required></div>
+          <div><label for="wasteQty">ปริมาณที่เหลือ (กิโลกรัม)</label><input id="wasteQty" type="number" min="0.01" step="0.01" required></div>
+          <div><label for="wasteCost">ต้นทุนที่สูญเสีย (บาท)</label><input id="wasteCost" type="number" min="0" step="0.01" required></div>
+          <button class="primary-btn form-submit" type="submit">บันทึกอาหารเหลือ <span>→</span></button>
+        </form></article>
+        <article class="panel"><h3>ประวัติอาหารเหลือ</h3><div class="table-wrap"><table><thead><tr><th>วันที่</th><th>รายการ</th><th>น้ำหนัก</th><th>ต้นทุนสูญเสีย</th></tr></thead><tbody id="wasteTable"></tbody></table></div></article>
+      </section>
+
+      <section id="menu" class="page hidden">
+        <div class="page-intro"><span class="eyebrow">MENU PROFITABILITY</span><h2>วิเคราะห์กำไรของเมนู</h2><p>จัดอันดับจากกำไรรวมของแต่ละเมนูที่บันทึกไว้</p></div>
+        <article class="panel"><div class="panel-heading"><h3>🏆 อันดับเมนูตามกำไร</h3><span class="muted">กำไร = (ราคาขาย − ต้นทุน) × จำนวนขาย</span></div><div id="menuAnalysis"></div></article>
+      </section>
+
+      <section id="forecast" class="page hidden">
+        <div class="page-intro"><span class="eyebrow">DEMAND FORECAST</span><h2>คาดการณ์ปริมาณที่ควรเตรียม</h2><p>ใช้ยอดขายย้อนหลัง 7 วันเป็นค่าเฉลี่ยเบื้องต้นในการวางแผนวันถัดไป</p></div>
+        <article class="panel"><div class="panel-heading"><h3>ผลการคาดการณ์สำหรับวันพรุ่งนี้</h3><span class="panel-icon">✦</span></div><div id="forecastResult"></div><button id="recalculateBtn" class="secondary-btn">↻ คำนวณใหม่</button><p class="notice">หมายเหตุ: เป็นการคำนวณเชิงสถิติอย่างง่าย ไม่ใช่โมเดล AI ที่ผ่านการฝึก และผลจะดีขึ้นเมื่อมีข้อมูลหลายวัน</p></article>
+      </section>
+
+      <section id="reports" class="page hidden">
+        <div class="page-intro"><span class="eyebrow">BUSINESS REPORTS</span><h2>รายงานยอดขาย</h2><p>สรุปยอดขายรายเดือนและรายปีจากข้อมูลที่บันทึก</p></div>
+        <article class="panel"><div class="panel-heading"><h3>สรุปรายงาน</h3><select id="reportType" class="compact-select"><option value="month">รายเดือน</option><option value="year">รายปี</option></select></div><div id="reportResult"></div><button id="exportBtn" class="secondary-btn">ดาวน์โหลดรายงาน CSV ↓</button></article>
+      </section>
+
+      <section id="privacy" class="page hidden">
+        <div class="page-intro"><span class="eyebrow">PRIVACY & DATA RIGHTS</span><h2>ศูนย์ความเป็นส่วนตัว</h2><p>จัดการข้อมูลส่วนบุคคลและตรวจสอบประวัติความยินยอม</p></div>
+        <article class="panel"><h3>สิทธิ์เจ้าของข้อมูล (Data Subject Rights)</h3><p class="muted">เลือกการดำเนินการเกี่ยวกับข้อมูลบัญชีทดลองของคุณ</p><div class="privacy-grid">
+          <button class="privacy-action" id="viewDataBtn"><b>ดูข้อมูลของฉัน</b><small>ตรวจสอบข้อมูลโปรไฟล์ที่จัดเก็บ</small></button>
+          <button class="privacy-action" id="editDataBtn"><b>แก้ไขข้อมูลของฉัน</b><small>แก้ไขชื่อที่ใช้ในบัญชีทดลอง</small></button>
+          <button class="privacy-action danger-action" id="deleteDataBtn"><b>ขอลบข้อมูลของฉัน</b><small>ส่งคำขอจำลองเพื่อให้ผู้ดูแลตรวจสอบ</small></button>
+          <button class="privacy-action" id="consentLogBtn"><b>Consent Log</b><small>ดูประวัติการตั้งค่าความยินยอม</small></button>
+          <button class="privacy-action" id="privacyPolicyBtn"><b>Privacy Policy</b><small>อ่านนโยบายความเป็นส่วนตัวตัวอย่าง</small></button>
+          <button class="privacy-action" id="cookieSettingsBtn"><b>ตั้งค่าคุกกี้</b><small>เปลี่ยนการยินยอมคุกกี้</small></button>
+        </div><div id="privacyResult" class="privacy-result" aria-live="polite"></div></article>
+      </section>
+      <footer>© 2026 SaveBite AI · Smart Restaurant, Sustainable Future</footer>
+    </main>
+  </div>
+
+  <div id="cookieBox" class="cookie-box hidden" role="dialog" aria-label="การตั้งค่าคุกกี้">
+    <div class="cookie-mark">🍪</div><div><h3>คุณควบคุมคุกกี้ได้</h3><p>คุกกี้ที่จำเป็นใช้เพื่อให้เว็บไซต์ทำงาน ส่วนคุกกี้เพิ่มเติมจะใช้เมื่อคุณยินยอมเท่านั้น (ตัวอย่างสำหรับโปรเจกต์)</p></div>
+    <div class="cookie-actions"><button id="acceptCookies" class="primary-btn">ยอมรับทั้งหมด</button><button id="rejectCookies" class="secondary-btn">ปฏิเสธคุกกี้เพิ่มเติม</button><button id="cookiePolicy" class="text-btn">อ่านนโยบาย</button></div>
+  </div>
+  <div id="toast" class="toast" role="status"></div>
+  <script src="app.js"></script>
+</body>
+</html>
